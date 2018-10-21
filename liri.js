@@ -7,8 +7,7 @@ var keys = require("./keys.js");
 
 var spotify = new Spotify(keys.spotify);
 
-// //Loading modules
-
+//variable for input
 var command = process.argv[2];
 var input = process.argv[3];
 
@@ -27,72 +26,76 @@ function concertIt(bandQuery) {
         // If the request is successful
         if (!error && response.statusCode === 200) {
 
-            // * If the user doesn't type a movie in, the program will output data for the movie 'Mr.Nobody.'
-            // console.log("The movie's rating is: " + JSON.parse(body).Title);
             var concertData = JSON.parse(body);
             // console.log(concertData);
             // for (i = 0; i < movieData.length && i < 5; i++) {
-
             console.log("===============================");
-            // * Title of the movie.              
+            // * Name of the venue
             console.log("Venue Name : " + concertData[0].venue.name +
-                // * Year the movie came out.
+                // * Venue location
                 "\nVenue Location: " + concertData[0].venue.city + "," + concertData[0].venue.country +
-                // * IMDB Rating of the movie.
+                //  * Date of the Event (use moment to format this as "MM/DD/YYYY")
                 "\nDate of the Event: " + concertData[0].datetime +
                 "\n===============================");
-            // }
+            
         };
     });
 }
 //     * `spotify-this-song`
 function spotifyIt(musicSearch) {
+
+    //  * If no song is provided then your program will default to "The Sign" by Ace of Base.
+    if (musicSearch === undefined || null) {
+        musicSearch = "The Sign Ace of Base";
+    }
+
     spotify.search({ type: 'track', query: musicSearch }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-//  * If no song is provided then your program will default to "The Sign" by Ace of Base.
-        // if (musicQuery === undefined) {
-        //     musicQuery = defaultSong;
                     
         else {
             for (i = 0; i < data.tracks.items.length && i < 5; i++){
             
                 var musicQuery = data.tracks.items[i];
                 // console.log("===============================");
+                 // * Artist(s)
                 console.log("Artist: " + musicQuery.artists[0].name +
+                // * The song's name
                 "\nSong Name: " + musicQuery.name +
+                //* A preview link of the song from Spotify
                 "\nLink to Song: " + musicQuery.preview_url +
+                //* The album that the song is from
                 "\nAlbum Name: " + musicQuery.album.name +
                 "\n===============================");
-           }
-        };
-        
+            }
+        };  
     });
 }
-// spotifyIt();
-
+// spotifyIt(); for testing
 
     // * `movie-this`
 function movieIt (movieQuery) {
-    
+ 
+    // * If the user doesn't type a movie in, the program will output data for the movie 'Mr.Nobody.'
+     if (movieQuery === undefined || null) {
+            movieQuery = "Mr.Nobody";
+        }
+
     // Then run a request to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + movieQuery + "&y=&plot=short&apikey=trilogy";
-    // + movieQuery +
+
     // This line is just to help us debug against the actual URL.
     console.log(queryUrl);
 
-    request(queryUrl, function (error, response, body) {
-
-        // If the request is successful
-        if (!error && response.statusCode === 200) {
+    request(queryUrl, function (error, response, body) { 
         
-// * If the user doesn't type a movie in, the program will output data for the movie 'Mr.Nobody.'
-            // console.log("The movie's rating is: " + JSON.parse(body).Title);
+    // If the request is successful
+       if (!error && response.statusCode === 200) {      
+           // JSON.parse for legibility
             var movieData = JSON.parse(body);
-
+                                   
             // for (i = 0; i < movieData.length && i < 5; i++) {
-               
                 console.log("===============================");
             // * Title of the movie.              
                 console.log("Movie Title: " + movieData.Title +
@@ -111,22 +114,21 @@ function movieIt (movieQuery) {
             // * Actors in the movie.
                 "\nActors: " + movieData.Actors +
                 "\n===============================");             
-            // }
+            // };
         };
-    });
+    }); 
 }
-
-// movieIt();
+// movieIt(); for testing
 
 // Switch for commands for all functions
-var ask = function (command, funData){
-    switch(command) {
+var ask = function (commands, funData){
+    switch(commands) {
         case "concert-this":
             concertIt(funData);
             break;
         case "movie-this" :
             movieIt(funData);
-            break;
+            break;    
         case 'spotify-this-song':
             spotifyIt(funData); 
             break;
@@ -134,22 +136,23 @@ var ask = function (command, funData){
             doWhatItSays(); 
             break;
         default:
-        console.log("Bad command.");
+        console.log("Invalid command. Please try again");
     }
 };
 
+//Do what it says reads text from random.txt file, command is ran
 var doWhatItSays = function() {
     fs.readFile("random.txt", "utf8", function (err, data) {
         if (err) throw err;
             var randomText = data.split(",");
         
-        if (randomtext.length == 2) {
-            ask (randomText[0], randomText [1]);
+        if (randomText.length == 2) {
+            ask(randomText[0], randomText[1]);
         }
         else if (randomText.length == 1) {
             ask(randomText[0]);
         }
     });
 }
-
+// asigns args to ask for switch case
 ask (command, input);
