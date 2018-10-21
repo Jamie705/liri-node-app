@@ -4,7 +4,7 @@ https://jamie705.github.io/liri-node-app/
 
 Search Spotify for songs, Bands in town for concerts and OMBD for movies. Have Fun.
 
-##How to use 
+## How to use 
 Use node to run this program. Use node liri.js then run one of the following comands, then add search text:
 
 * `concert-this`
@@ -13,7 +13,7 @@ Use node to run this program. Use node liri.js then run one of the following com
 * `do-what-it-says`
 
 ### When running a command follow it by desired text/search.
-* Example:
+Example:
 node liri.js movie-this underworld
 
 ### When concert-this command is used you will be provided with:
@@ -42,10 +42,8 @@ node liri.js movie-this underworld
 * Actors in the movie.
 * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.
 
-### When do-what-it-says command is used you will be provided with:
-a random.txt file with search for spotify-this-song "I want it that way."
-
-This will give you the spotify results of "I want it that way."
+### When do-what-it-says command:
+A random.txt file with search for spotify-this-song "I want it that way." This will give you the spotify results of "I want it that way."
 
 ### Technologies Used
 * JavaScript
