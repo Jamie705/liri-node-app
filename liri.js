@@ -13,7 +13,38 @@ var command = process.argv[2];
 var input = process.argv[3];
 
 //    * `concert-this`
+https://rest.bandsintown.com/artists/adel/events?app_id=codingbootcamp#
+function concertIt(bandQuery) {
 
+    // Then run a request to the OMDB API with the movie specified
+    var queryUrl = "https://rest.bandsintown.com/artists/" + bandQuery + "/events?app_id=codingbootcamp#";
+    // + movieQuery +
+    // This line is just to help us debug against the actual URL.
+    console.log(queryUrl);
+
+    request(queryUrl, function (error, response, body) {
+
+        // If the request is successful
+        if (!error && response.statusCode === 200) {
+
+            // * If the user doesn't type a movie in, the program will output data for the movie 'Mr.Nobody.'
+            // console.log("The movie's rating is: " + JSON.parse(body).Title);
+            var concertData = JSON.parse(body);
+            // console.log(concertData);
+            // for (i = 0; i < movieData.length && i < 5; i++) {
+
+            console.log("===============================");
+            // * Title of the movie.              
+            console.log("Venue Name : " + concertData[0].venue.name +
+                // * Year the movie came out.
+                "\nVenue Location: " + concertData[0].venue.city + "," + concertData[0].venue.country +
+                // * IMDB Rating of the movie.
+                "\nDate of the Event: " + concertData[0].datetime +
+                "\n===============================");
+            // }
+        };
+    });
+}
 //     * `spotify-this-song`
 function spotifyIt(musicSearch) {
     spotify.search({ type: 'track', query: musicSearch }, function (err, data) {
@@ -91,7 +122,7 @@ function movieIt (movieQuery) {
 var ask = function (command, funData){
     switch(command) {
         case "concert-this":
-            concert(funData);
+            concertIt(funData);
             break;
         case "movie-this" :
             movieIt(funData);
