@@ -2,6 +2,9 @@
 
 https://jamie705.github.io/liri-node-app/
 
+Click below to view example:
+https://drive.google.com/file/d/1-K-iYywYYW6Lkgd-F2iCoC3e4jxvHybM/view
+
 Search Spotify for songs, Bands in town for concerts and OMBD for movies. Have Fun.
 
 ## How to use 
