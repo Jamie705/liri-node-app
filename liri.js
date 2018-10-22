@@ -5,6 +5,11 @@ var Spotify = require('node-spotify-api');
 var dotenv = require("dotenv").config();
 var keys = require("./keys.js");
 
+//moment js
+var moment = require('moment');
+moment().format();
+
+//spotify keys
 var spotify = new Spotify(keys.spotify);
 
 //variable for input
@@ -27,6 +32,11 @@ function concertIt(bandQuery) {
         if (!error && response.statusCode === 200) {
 
             var concertData = JSON.parse(body);
+
+            var concertDT = concertData[0].datetime
+            var momentDT = moment().format('L');
+
+
             // console.log(concertData);
             // for (i = 0; i < movieData.length && i < 5; i++) {
             console.log("===============================");
@@ -35,7 +45,7 @@ function concertIt(bandQuery) {
                 // * Venue location
                 "\nVenue Location: " + concertData[0].venue.city + "," + concertData[0].venue.country +
                 //  * Date of the Event (use moment to format this as "MM/DD/YYYY")
-                "\nDate of the Event: " + concertData[0].datetime +
+                "\nDate of the Event: " + momentDT +
                 "\n===============================");
             
         };
